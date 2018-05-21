@@ -42,10 +42,6 @@ int main(int argc, char* argv[]) {
 
     _INFO("http starting");
 
-   
-    
-   
-
     acceptor = new http_acceptor(config.epoll_cnt, config.max_conn);
     ret = acceptor->open(config);
     if (ret < 0) {
