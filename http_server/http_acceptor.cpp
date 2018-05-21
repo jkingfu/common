@@ -7,6 +7,7 @@
 #include <sys/epoll.h>
 #include <service_log.hpp>
 #include "http_acceptor.hpp"
+#include "http_handler.hpp"
 
 #define SOCKET_SND_BUF_SIZE (1024*1024)
 #define SOCKET_RCV_BUF_SIZE (1024*1024)
@@ -149,7 +150,11 @@ int http_acceptor::svc() {
     char* recv_buf = (char*)malloc(max_recv_buf_len);
     char* req_buf = (char*)malloc(max_recv_buf_len);
     char* decompress_buf = (char*)malloc(decompress_buf_len);
-    
+    http_handler_args handler_args;
+    handler_args.recv_buf=recv_buf;
+    handler_args.req_buf=req_buf;
+    handler_args.decompress_buf=decompress_buf;
+    http_handler* handler= new http_handler(handler_args);
     int ret =-1;
     int fd, new_fd;
     uint32_t event;
@@ -203,6 +208,10 @@ int http_acceptor::svc() {
         else {
             del_input_fd(fd, epoll_fd);
             pthread_mutex_unlock(epoll_mutex);
+            http_handle_args handle_args;
+            handle_args.fd=fd;
+            handle_args.local_epoll_idx=local_epoll_idx;
+            handler->handle(handle_args);
             _INFO("process");
         }
 
@@ -210,6 +219,7 @@ int http_acceptor::svc() {
     free(recv_buf);
     free(req_buf);
     free(decompress_buf);
+    delete handler;
     return 0;
 }
 
