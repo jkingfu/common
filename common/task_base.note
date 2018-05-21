@@ -1,0 +1,14 @@
+结构
+pthread_barrier_t
+三个方法
+pthread_barrier_init
+pthread_barrier_wait
+pthread_barrier_destroy
+
+thread的barrier机制,首先主线程调用pthread_barrier_init初始化(pthread_barrier_init(&m_barrier, NULL, thread_num)),设定需要等待的数量
+然后每个线程调用pthread_barrier_wait(pthread_barrier_wait(&task->m_barrier)) 而后进行等待，当调用的次数等于thread_num时,结束等待，运行下一条语句
+最后pthread_barrier_destroy
+
+线程属性
+pthread_attr_setdetachstate ?
+pthread_attr_setstacksize 设置线程堆栈大小,默认是ulimit -s

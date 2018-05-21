@@ -1,0 +1,8 @@
+¹ÜµÀ:
+pipe
+fcntl
+
+epoll:
+epoll_create
+epoll_ctl
+
