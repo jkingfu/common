@@ -17,7 +17,7 @@ public:
     virtual int stop();
     virtual int svc();
 private:
-    configuration* config;
+    const configuration* config;
     int stop_task;
 };
 
