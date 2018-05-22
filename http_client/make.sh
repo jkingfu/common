@@ -1,0 +1,1 @@
+ g++ -I common http_client/http_client.cpp common/task_base.cpp  http_client/main.cpp  -lpthread -g
