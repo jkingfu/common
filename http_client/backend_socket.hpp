@@ -125,7 +125,7 @@ class backend_socket {
                     return -1;
                 }
             }
-            //_INFO("connect to %s:%d success", inet_ntoa(address->sin_addr), ntohs(address->sin_port));
+            _INFO("connect to %s:%d success", inet_ntoa(address->sin_addr), ntohs(address->sin_port));
             status = VALID;
             setSocket();
             return fd;
