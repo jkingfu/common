@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "configuration.hpp"
-#include "http_acceptor.hpp"
+#include "http_client.hpp"
 
 
 using namespace std;
