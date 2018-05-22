@@ -32,9 +32,9 @@ int http_client::stop() {
 
 int http_client::svc() {
 
-    hostent *svr_host = gethostbyname(config->ip.c_str());
+    hostent *svr_host = gethostbyname(config->domain.c_str());
     if (svr_host == NULL) {
-        _ERROR("[Hint] Get host %s by name failed: %s\n", config->ip.c_str(), strerror(errno));
+        _ERROR("[Hint] Get host %s by name failed: %s\n", config->domain.c_str(), strerror(errno));
         return 1;
     }
     sockaddr_in svr;

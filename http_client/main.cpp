@@ -34,7 +34,9 @@ int main(int argc, char* argv[]) {
 
     configuration config;
     config.port=8080;
-    config.ip="10.";
+    config.ip="10.134.64.94";
+    config.domain="10.134.64.94";
+    config.tcp_connect_timeout=20;
     config.handler_thread_num=30;
     config.thread_stack_size=2048 * (1 << 10);
     
