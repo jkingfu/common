@@ -65,50 +65,28 @@ int base_nio_handler::readn_timeout(int fd, std::string &content, int buf_len) {
 }
 
 int base_nio_handler::readn_timeout(int fd, char* content, int need_to_read, timeval* timeout) {
-	char buf[READ_BUF_SIZE + 1];
-	int n, left;
-	int len;
+    char buf[READ_BUF_SIZE + 1];
+    int n, left;
+    int len;
     int ptr = 0;
-	left = need_to_read;
-	while (left > 0) {
-		len = left > READ_BUF_SIZE ? READ_BUF_SIZE : left;
-		n = read_data(fd, buf, len, timeout);
-		if (n <= 0 ) {
-			if(n == 0)
-				return -2;
-			return need_to_read - left;
-		}
-		buf[n] = '\0';
+    left = need_to_read;
+    while (left > 0) {
+        len = left > READ_BUF_SIZE ? READ_BUF_SIZE : left;
+        n = read_data(fd, buf, len, timeout);
+        if (n <= 0 ) {
+            if(n == 0)
+                return -2;
+            return need_to_read - left;
+        }
+        buf[n] = '\0';
         memcpy(content + ptr, buf, len);
         ptr = ptr + n;
-		left = left - n;
-	}
-	return need_to_read;
+        left = left - n;
+    }
+    return need_to_read;
 }
 
-/*
 int base_nio_handler::read_data(int fd, void * buf, int buf_len, timeval* timeout) {
-    pollfd read_fd;
-    read_fd.fd = fd;
-    read_fd.events = POLLIN;
-    int poll_ret = poll(&read_fd, 1, timeout->tv_sec * 1000 + timeout->tv_usec / 1000);
-    if (poll <= 0 || !(read_fd.revents & POLLIN)) {
-        return -1; 
-    }
-    /*
-    fd_set rset;
-    FD_ZERO(&rset);
-    FD_SET(fd, &rset);
-    if (select(fd + 1, &rset, NULL, NULL, timeout) <= 0) {
-        //_INFO("select errno=%d", errno);
-        return -1;
-    }
-    */
-//    return read(fd, buf, buf_len);
-//}
-
-int base_nio_handler::read_data(int fd, void * buf, int buf_len, timeval* timeout) {
-    
     if (!(timeout->tv_sec >= 0 && timeout->tv_usec >=0))
         return -1;    
 
@@ -172,15 +150,15 @@ int base_nio_handler::read_data(int fd, void * buf, int buf_len, timeval* timeou
 }
 
 int base_nio_handler::writen_timeout(int fd, const void *buf, int buf_len, int to) {
-	int left = buf_len;
-	int n;
+    int left = buf_len;
+    int n;
     //fd_set wset;
     pollfd write_fd;
     write_fd.fd = fd;
     write_fd.events = POLLOUT;
     int poll_ret;
 
-	int real_to = to == -1 ? send_timeout : to;
+    int real_to = to == -1 ? send_timeout : to;
     timeval timeout = {
         0,
         real_to * 1000
@@ -231,11 +209,11 @@ int base_nio_handler::writen_timeout(int fd, const void *buf, int buf_len, int t
         if (select(fd + 1, NULL, &wset, NULL, &timeout) <= 0)
             return -1;
         */
-		if ((n = write(fd, buf, left)) <= 0)
-			return buf_len - left;
+        if ((n = write(fd, buf, left)) <= 0)
+            return buf_len - left;
 
-		buf = (char *)buf + n;
-		left -= n;
+        buf = (char *)buf + n;
+        left -= n;
     }
     return buf_len;
 }
@@ -306,8 +284,8 @@ int base_nio_handler::i_read_http_header_timeout(int fd, std::string& header, ch
         n = read_data(fd, buf, READ_BUF_SIZE, &timeout);
         if (n <= 0) {
             _ERROR("in recv http header errno=%d, n=%d", errno, n);
-			if(n == 0)
-				return -2;
+            if(n == 0)
+                return -2;
             return -1;
         }
         buf[n] = '\0';
@@ -321,7 +299,7 @@ int base_nio_handler::i_read_http_header_timeout(int fd, std::string& header, ch
 
 int base_nio_handler::i_recv_http_res(int fd, char* res_buf, int& res_len, std::string& header, int recv_timeout) {
     const int max_res_buf_len = res_len;
-	header = "";
+    header = "";
     res_len = 0;
     timeval begin;
     timeval end;
@@ -332,8 +310,8 @@ int base_nio_handler::i_recv_http_res(int fd, char* res_buf, int& res_len, std::
     }
     if (ret < 0) {
         _ERROR("receive header error");
-		if(ret == -2)
-			return -5;
+        if(ret == -2)
+            return -5;
         return -1;
     }
     // ÓÐcontent-lenµÄ
@@ -350,14 +328,14 @@ int base_nio_handler::i_recv_http_res(int fd, char* res_buf, int& res_len, std::
             _ERROR("body len=%d, exceed max_len=%d", body_len, max_res_buf_len);
         }
         int need_to_read = body_len - ret;
-		if (need_to_read < 0) {
-			_ERROR("sugg need_to_read err=%d", need_to_read);
-			return -4;
-		}
+        if (need_to_read < 0) {
+            _ERROR("sugg need_to_read err=%d", need_to_read);
+            return -4;
+        }
         ret = readn_timeout(fd, res_buf + ret, need_to_read, &timeout);
         if (ret != need_to_read) {
-			if(ret == -2)
-				return -5;
+            if(ret == -2)
+                return -5;
             return -2;
         }
         res_len = body_len;
@@ -423,7 +401,7 @@ int base_nio_handler::i_recv_http_res(int fd, char* res_buf, int& res_len, std::
         }
     }
     else {
-		res_len = 0;
+        res_len = 0;
         return 10;
     }
     return 0;
