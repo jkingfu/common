@@ -16,6 +16,10 @@ void usage(const char *bin_name) {
     printf("Usage:\n");
     printf("        %s [options]\n\n", bin_name);
     printf("Options:\n");
+    printf("        -d:             domain.\n");
+    printf("        -p:             port.\n");
+    printf("        -t:             tcp_connect_timeout.\n");
+    printf("        -n:             handler_thread_num.\n");
     printf("        -h:             Show help messages.\n");
 }
 
@@ -39,6 +43,29 @@ int main(int argc, char* argv[]) {
     config.tcp_connect_timeout=20;
     config.handler_thread_num=30;
     config.thread_stack_size=2048 * (1 << 10);
+    
+    char opt_char;
+    while ((opt_char = getopt(argc, argv, "d:p:t:n:h")) != -1) {
+        switch (opt_char) {
+            case 'd':
+                config.domain = optarg;
+                break;
+            case 'p':
+                config.port = atoi(optarg);
+                break;
+            case 't':
+                config.tcp_connect_timeout = atoi(optarg);
+                break;
+            case 'n':
+                config.handler_thread_num = atoi(optarg);
+                break;
+            case 'h':
+                usage(argv[0]);
+                return 0;
+            default:
+                break;
+        }
+    }
     
     http_client* client;
 

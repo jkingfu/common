@@ -98,7 +98,7 @@ class backend_socket {
                     pollfd connect_fd;
                     connect_fd.fd = fd;
                     connect_fd.events = POLLOUT;
-                    int poll_ret = poll(&connect_fd, 1, timeout);
+                    int poll_ret = poll(&connect_fd, 1, timeout); // timeout unit is ms
                     timeval end;
                     gettimeofday(&end, NULL);
                     _INFO("connect cost=%ld", end.tv_sec * 1000000 + end.tv_usec - begin.tv_sec * 1000000 - begin.tv_usec);
