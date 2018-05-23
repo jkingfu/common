@@ -31,7 +31,7 @@ protected:
 
 protected:
     int max_conn;
-    int epoll_cnt;
+    
     int listen_port;
     int listen_fd;
     int* epoll_fds;
@@ -42,14 +42,16 @@ protected:
     pthread_mutex_t conn_mutex;
     pthread_spinlock_t wspinlock;
     pthread_mutex_t epoll_idx_mutex;
-    epoll_event** epoll_ready_events;
-    int* epoll_ready_event_num;
+    epoll_event** epoll_ready_events;    
     int* pipe_read_fds;
     int* pipe_write_fds;
     int epoll_thread_cnt;
-    int    incoming_fd_cnt;
+    
     uint32_t add_sum;
-
+public:
+    int epoll_cnt;
+    int* epoll_ready_event_num;
+    int  incoming_fd_cnt;
 };
 
 #endif

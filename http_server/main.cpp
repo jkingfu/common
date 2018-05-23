@@ -54,6 +54,18 @@ int main(int argc, char* argv[]) {
     _INFO("acceptor svc ok");
 
     _INFO("http start ok");
+    
+    http_inspect* inspect = new http_acceptor(acceptor);
+    inspect->open(config);
+     if (ret < 0) {
+        _ERROR("inspect open fail");
+        exit(-1);
+    }
+    _INFO("open inspect ok");
+
+    inspect->activate();
+    _INFO("inspect svc ok");
+    
     pause();
     _INFO("http is stopping");
 
