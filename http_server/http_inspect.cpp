@@ -36,8 +36,10 @@ int http_inspect::svc() {
         gettimeofday( &t_end, NULL );
         timeuse_s = t_end.tv_sec - t_start.tv_sec;
         timeuse_us = 1000000 * (t_end.tv_sec - t_start.tv_sec ) + t_end.tv_usec - t_start.tv_usec;
-        
-        _INFO("[http_inspect] qps %lld/%lld=%llf", (incoming_fd_cnt-last_incoming_fd_cnt),timeuse_us,);
+        int incre = incoming_fd_cnt-last_incoming_fd_cnt;
+        float qps = (float)incre/timeuse_s;
+        _INFO("[http_inspect] qps %d/%lld=%f", incre, timeuse_s, qps);
+        last_incoming_fd_cnt = incoming_fd_cnt;
     }
     return 0;
 }

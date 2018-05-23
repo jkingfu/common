@@ -43,7 +43,6 @@ http_acceptor::http_acceptor(int _epoll_cnt, int _max_conn) {
     incoming_fd_cnt = 0; // no lock improve efficient
     epoll_thread_cnt = 0; // increment for select a epoll id every thread
     pthread_mutex_init(&conn_mutex, NULL); // lock listen thread, calc conn count
-    pthread_spin_init(&wspinlock, NULL);
 }
 
 http_acceptor::~http_acceptor() {
@@ -61,7 +60,6 @@ http_acceptor::~http_acceptor() {
     delete[] epoll_ready_events;
     pthread_mutex_destroy(&epoll_idx_mutex);
     pthread_mutex_destroy(&conn_mutex);
-    pthread_spin_destroy(&wspinlock);
 }
 
 

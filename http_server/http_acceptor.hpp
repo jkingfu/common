@@ -40,7 +40,6 @@ protected:
     uint32_t wid;
     pthread_mutex_t* epoll_mutexes;
     pthread_mutex_t conn_mutex;
-    pthread_spinlock_t wspinlock;
     pthread_mutex_t epoll_idx_mutex;
     epoll_event** epoll_ready_events;    
     int* pipe_read_fds;

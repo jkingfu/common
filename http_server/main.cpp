@@ -8,6 +8,7 @@
 
 #include "configuration.hpp"
 #include "http_acceptor.hpp"
+#include "http_inspect.hpp"
 
 
 using namespace std;
@@ -55,7 +56,7 @@ int main(int argc, char* argv[]) {
 
     _INFO("http start ok");
     
-    http_inspect* inspect = new http_acceptor(acceptor);
+    http_inspect* inspect = new http_inspect(acceptor);
     inspect->open(config);
      if (ret < 0) {
         _ERROR("inspect open fail");
